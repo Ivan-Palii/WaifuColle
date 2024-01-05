@@ -10,16 +10,18 @@
   },
   "dependencies": {
     "@mdi/font": "7.0.96",
+    "@rushstack/eslint-patch": "^1.3.3",
+    "@vue/eslint-config-typescript": "^11.0.3",
     "core-js": "^3.29.0",
+    "cropperjs": "1.6.1",
     "firebase": "^10.7.1",
     "pinia": "^2.0.0",
     "roboto-fontface": "*",
     "vue": "^3.4.5",
+    "vue-picture-cropper": "^0.7.0",
     "vue-router": "^4.2.5",
     "vuetify": "^3.4.9",
-    "webfontloader": "^1.0.0",
-    "@rushstack/eslint-patch": "^1.3.3",
-    "@vue/eslint-config-typescript": "^11.0.3"
+    "webfontloader": "^1.0.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.0.0",

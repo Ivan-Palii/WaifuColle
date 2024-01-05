@@ -1,14 +1,18 @@
 <script setup>
 import { useFirebaseDataStore } from "@/store/firebaseData.js";
+import VuePictureCropper, { cropper } from "vue-picture-cropper";
+
 import { reactive, ref } from "vue";
+import CharacterAvatarImageCorp from "@/components/CharacterAvatarImageCorp.vue";
 
 const { createCharacter } = useFirebaseDataStore();
 const characterData = reactive({
 	name: "",
 	status: "",
+	pfp: new URL(`@/assets/default.jpg`, import.meta.url).href,
 });
-
 const isValid = ref(false);
+const isActive = ref(false);
 const emptyCheck = (v) => !!v || "Field is required";
 const rule = reactive({
 	notEmpty: [emptyCheck],
@@ -20,7 +24,12 @@ async function formSubmit() {
 		await createCharacter(characterData);
 		characterData.name = "";
 		characterData.status = "";
+		characterData.pfp = new URL(`@/assets/default.jpg`, import.meta.url).href;
 	}
+}
+
+function corpedImage(data) {
+	characterData.pfp = data;
 }
 </script>
 <template>
@@ -29,6 +38,12 @@ async function formSubmit() {
 		<VRow class="pa-8">
 			<VCol cols="12">
 				<VForm v-model="isValid" lazy-validation @submit.prevent="formSubmit">
+					<div>
+						<VAvatar size="200" style="border: 1px solid black" class="mb-8">
+							<VImg :src="characterData.pfp" />
+						</VAvatar>
+						<CharacterAvatarImageCorp @image="corpedImage" />
+					</div>
 					<VTextField
 						v-model.trim="characterData.name"
 						:rules="rule.notEmpty"
@@ -48,3 +63,4 @@ async function formSubmit() {
 	</VCard>
 </template>
 <style scoped lang="scss"></style>
+<!--@ready="ready"-->

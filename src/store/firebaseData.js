@@ -51,15 +51,18 @@ export const useFirebaseDataStore = defineStore("firebaseData", () => {
 	async function queryBuilder(props) {
 		if (Object.keys(props).length) {
 			try {
+				console.log(props);
 				const categoriesDocRef = ref([]);
 				const sourcesDocRef = ref([]);
 				props.categories.forEach((el) =>
 					categoriesDocRef.value.push(doc(db, "sourceCategory", el))
 				);
 
+				console.log(categoriesDocRef.value);
+
 				const qCategories = query(
 					collection(db, "source"),
-					where("category", "in", categoriesDocRef.value)
+					where("categories", "array-contains-any", categoriesDocRef.value)
 				);
 
 				const sources = await getDocs(qCategories);
@@ -78,9 +81,14 @@ export const useFirebaseDataStore = defineStore("firebaseData", () => {
 	}
 
 	async function createSource(sourceData) {
+		const categoriesDocRef = ref([]);
+		sourceData.categories.forEach((item) => {
+			categoriesDocRef.value.push(doc(db, "sourceCategory", item));
+		});
+
 		const docRef = await addDoc(collection(db, "source"), {
 			...sourceData,
-			category: doc(db, "sourceCategory", sourceData.category),
+			categories: categoriesDocRef.value,
 		});
 		console.info("Document written with ID: ", docRef.id);
 	}

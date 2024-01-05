@@ -7,40 +7,46 @@ import CreateLayout from "@/layouts/CreateLayout.vue";
 import CreateSourceComponent from "@/components/creating/CreateSourceComponent.vue";
 import CreateCharacterComponent from "@/components/creating/CreateCharacterComponent.vue";
 import CreateFamilyComponent from "@/components/creating/CreateFamilyComponent.vue";
+import CharactersPage from "@/views/CharactersPage.vue";
 
 
 const routes = [
   {
-    path: '/',
+    path: '/WaifuColle',
     component: MainLayout,
     children: [
       {
-        path: '',
+        path: '/WaifuColle/',
         name: 'Home',
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
         component: HomePage,
       },
+			{
+				path: '/WaifuColle/characters',
+				name: 'Characters',
+				component: CharactersPage
+			}
     ],
   },
 	{
-		path: '/create',
+		path: '/WaifuColle/create',
 		name: 'Create',
 		component: CreateLayout,
 		children: [
 			{
-				path: '/create/source',
+				path: '/WaifuColle/create/source',
 				name: 'CreateSource',
 				component: CreateSourceComponent
 			},
 			{
-				path: '/create/character',
+				path: '/WaifuColle/create/character',
 				name: 'CreateCharacter',
 				component: CreateCharacterComponent
 			},
 			{
-				path: '/create/family',
+				path: '/WaifuColle/create/family',
 				name: 'CreateFamily',
 				component: CreateFamilyComponent
 			},

@@ -15,7 +15,7 @@ const familyData = reactive({
 	name: "",
 	source: "",
 	isCanon: false,
-	members: [''],
+	members: [],
 });
 const isValid = ref(false);
 const emptyCheck = (v) => !!v || "Field is required";
@@ -25,16 +25,21 @@ const rule = reactive({
 
 async function formSubmit() {
 	if (isValid.value) {
-		await createFamily(familyData)
-		// await createSource(familyData);
-		/*		familyData.name = "";
+		console.log(familyData);
+		await createFamily(familyData);
+		familyData.name = "";
 		familyData.source = "";
 		familyData.isCanon = false;
-		familyData.members = [];*/
+		familyData.members = [];
 	}
 }
-function addFamilyMember() {
-	familyData.members.push("");
+function customFilter(itemTitle, queryText, item) {
+	return (
+		item.raw.name.toLowerCase().indexOf(queryText.toLowerCase()) > -1 ||
+		!!item.raw.altNames.find((item) => {
+			return item.toLowerCase().indexOf(queryText.toLowerCase()) > -1;
+		})
+	);
 }
 </script>
 <template>
@@ -54,6 +59,7 @@ function addFamilyMember() {
 						v-model="familyData.source"
 						:items="sources"
 						:rules="rule.notEmpty"
+						:custom-filter="customFilter"
 						item-title="name"
 						item-value="id"
 						label="Source(*)"
@@ -66,19 +72,31 @@ function addFamilyMember() {
 							<VCol cols="12">
 								<VCardSubtitle>Family members:</VCardSubtitle>
 								<VAutocomplete
-									v-for="(member, index) in familyData.members"
-									v-model="familyData.members[index]"
+									v-model="familyData.members"
 									:items="characters"
-									:rules="rule.notEmpty"
-									:key="member"
+									chips
+									closable-chips
 									item-title="name"
 									item-value="id"
 									label="Member(*)"
 									variant="outlined"
-								/>
-								<VBtn variant="outlined" @click="addFamilyMember">
-									Add member
-								</VBtn>
+									multiple
+								>
+									<template #chip="{ props, item }">
+										<VChip
+											v-bind="props"
+											:prepend-avatar="item.raw.pfp"
+											:text="item.raw.name"
+										/>
+									</template>
+									<template #item="{ props, item }">
+										<VListItem
+											v-bind="props"
+											:prepend-avatar="item.raw.pfp"
+											:title="item.raw.name"
+										/>
+									</template>
+								</VAutocomplete>
 							</VCol>
 						</VRow>
 					</VCard>

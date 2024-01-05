@@ -1,4 +1,5 @@
-<script setup></script>
+<script setup>
+</script>
 <template>
 	<VAppBar color="secondary" density="compact">
 		<template #prepend>
@@ -8,7 +9,6 @@
 		</template>
 	</VAppBar>
 	<h2>CREATE LAYOUT</h2>
-
 	<RouterView />
 </template>
 <style scoped lang="scss">
