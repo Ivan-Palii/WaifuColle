@@ -1,5 +1,5 @@
 // Composables
-import {createRouter, createWebHashHistory, createWebHistory} from 'vue-router'
+import {createRouter, createWebHashHistory} from 'vue-router'
 
 import MainLayout from "@/layouts/MainLayout.vue";
 import HomePage from "@/views/HomePage.vue";
@@ -12,11 +12,11 @@ import CharactersPage from "@/views/CharactersPage.vue";
 
 const routes = [
   {
-    path: '/WaifuColle',
+    path: '/',
     component: MainLayout,
     children: [
       {
-        path: '/WaifuColle/',
+        path: '',
         name: 'Home',
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
@@ -24,29 +24,29 @@ const routes = [
         component: HomePage,
       },
 			{
-				path: '/WaifuColle/characters',
+				path: '/characters',
 				name: 'Characters',
 				component: CharactersPage
 			}
     ],
   },
 	{
-		path: '/WaifuColle/create',
+		path: '/create',
 		name: 'Create',
 		component: CreateLayout,
 		children: [
 			{
-				path: '/WaifuColle/create/source',
+				path: '/create/source',
 				name: 'CreateSource',
 				component: CreateSourceComponent
 			},
 			{
-				path: '/WaifuColle/create/character',
+				path: '/create/character',
 				name: 'CreateCharacter',
 				component: CreateCharacterComponent
 			},
 			{
-				path: '/WaifuColle/create/family',
+				path: '/create/family',
 				name: 'CreateFamily',
 				component: CreateFamilyComponent
 			},

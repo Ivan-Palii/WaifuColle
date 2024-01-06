@@ -38,25 +38,40 @@ function corpedImage(data) {
 		<VRow class="pa-8">
 			<VCol cols="12">
 				<VForm v-model="isValid" lazy-validation @submit.prevent="formSubmit">
-					<div>
-						<VAvatar size="200" style="border: 1px solid black" class="mb-8">
-							<VImg :src="characterData.pfp" />
-						</VAvatar>
-						<CharacterAvatarImageCorp @image="corpedImage" />
-					</div>
-					<VTextField
-						v-model.trim="characterData.name"
-						:rules="rule.notEmpty"
-						label="Name(*)"
-						variant="outlined"
-						required
-					/>
-					<VRadioGroup v-model="characterData.status" :rules="rule.bool" inline>
-						<template #label> <b>Character status:</b></template>
-						<VRadio :value="false" label="Dead" />
-						<VRadio :value="true" label="Alive" />
-					</VRadioGroup>
-					<VBtn type="submit" variant="outlined">Create</VBtn>
+					<VRow class="mb-4">
+						<VCol cols="12" md="3" sm="6">
+							<div class="d-flex justify-center">
+								<VAvatar
+									size="200"
+									style="border: 1px solid black"
+									class="mb-8"
+								>
+									<VImg :src="characterData.pfp"/>
+								</VAvatar>
+							</div>
+							<div class="d-flex justify-center">
+								<CharacterAvatarImageCorp
+									:aspect-ratio-prop="1 / 1"
+									@image="corpedImage"
+								/>
+							</div>
+						</VCol>
+						<VCol cols="12" md="3" sm="6">
+							<VTextField
+								v-model.trim="characterData.name"
+								:rules="rule.notEmpty"
+								label="Name(*)"
+								variant="outlined"
+								required
+							/>
+							<VRadioGroup v-model="characterData.status" :rules="rule.bool" inline>
+								<template #label> <b>Character status:</b></template>
+								<VRadio :value="false" label="Dead" />
+								<VRadio :value="true" label="Alive" />
+							</VRadioGroup>
+						</VCol>
+					</VRow>
+					<VBtn width="100%" type="submit" variant="outlined">Create</VBtn>
 				</VForm>
 			</VCol>
 		</VRow>

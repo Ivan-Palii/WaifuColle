@@ -51,7 +51,7 @@ export const useFirebaseDataStore = defineStore("firebaseData", () => {
 	async function queryBuilder(props) {
 		if (Object.keys(props).length) {
 			try {
-				console.log(props);
+				// console.log(props);
 				const categoriesDocRef = ref([]);
 				const sourcesDocRef = ref([]);
 				props.categories.forEach((el) =>
@@ -71,7 +71,7 @@ export const useFirebaseDataStore = defineStore("firebaseData", () => {
 				);
 				return query(
 					collection(db, "family"),
-					where("source", "in", sourcesDocRef.value)
+					where("sources", "array-contains-any", sourcesDocRef.value)
 				);
 			} catch (e) {
 				console.error("Wrong db request", e);
@@ -105,11 +105,15 @@ export const useFirebaseDataStore = defineStore("firebaseData", () => {
 		familyData.members.forEach((item) => {
 			charactersDocRef.value.push(doc(db, "character", item));
 		});
+		const sourcesDocRef = ref([]);
+		familyData.sources.forEach((item) => {
+			sourcesDocRef.value.push(doc(db, "source", item));
+		});
 
 		const docRef = await addDoc(collection(db, "family"), {
 			...familyData,
 			members: charactersDocRef.value,
-			source: doc(db, "source", familyData.source),
+			sources: sourcesDocRef.value,
 		});
 		console.info("Document written with ID: ", docRef.id);
 	}

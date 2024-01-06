@@ -2,6 +2,12 @@
 import { reactive, ref } from "vue";
 import VuePictureCropper, { cropper } from "vue-picture-cropper";
 
+const props = defineProps({
+	aspectRatioProp: {
+		required: true,
+		type: Number,
+	},
+});
 const emit = defineEmits(["image"]);
 const isShowModal = ref(false);
 const uploadInput = ref(null);
@@ -58,7 +64,7 @@ async function getResult() {
 	// console.log({ base64, blob, file });
 	result.dataURL = base64;
 	// result.blobURL = URL.createObjectURL(blob);
-	console.log(result.dataURL);
+	// console.log(result.dataURL);
 	emit("image", result.dataURL);
 	isShowModal.value = false;
 }
@@ -75,7 +81,7 @@ function reset() {
  * The ready event passed to Cropper.js
  */
 function ready() {
-	console.log("Cropper is ready.");
+	// console.log("Cropper is ready.");
 }
 </script>
 <template>
@@ -120,7 +126,7 @@ function ready() {
 						:options="{
 							viewMode: 1,
 							dragMode: 'crop',
-							aspectRatio: 1 / 1,
+							aspectRatio: aspectRatioProp,
 						}"
 						@ready="ready"
 					/>

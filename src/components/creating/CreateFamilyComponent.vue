@@ -13,7 +13,7 @@ onMounted(async () => {
 
 const familyData = reactive({
 	name: "",
-	source: "",
+	sources: [],
 	isCanon: false,
 	members: [],
 });
@@ -28,7 +28,7 @@ async function formSubmit() {
 		console.log(familyData);
 		await createFamily(familyData);
 		familyData.name = "";
-		familyData.source = "";
+		familyData.sources = [];
 		familyData.isCanon = false;
 		familyData.members = [];
 	}
@@ -56,7 +56,7 @@ function customFilter(itemTitle, queryText, item) {
 						required
 					/>
 					<VAutocomplete
-						v-model="familyData.source"
+						v-model="familyData.sources"
 						:items="sources"
 						:rules="rule.notEmpty"
 						:custom-filter="customFilter"
@@ -64,9 +64,31 @@ function customFilter(itemTitle, queryText, item) {
 						item-value="id"
 						label="Source(*)"
 						variant="outlined"
+						multiple
+						chips
+						closable-chips
 						required
-					/>
-					<VCheckbox v-model="familyData.isCanon" label="Canon" />
+					>
+						<template #chip="{ props, item }">
+							<VChip
+								v-bind="props"
+								:prepend-avatar="item.raw.poster"
+								:text="item.raw.name"
+							/>
+						</template>
+						<template #item="{ props, item }">
+							<VListItem v-bind="props" :title="item.raw.name">
+								<template #prepend>
+									<VImg
+										:width="40"
+										:aspect-ratio="2 / 3"
+										:src="item.raw.poster"
+										class="mr-2"
+									/>
+								</template>
+							</VListItem>
+						</template>
+					</VAutocomplete>
 					<VCard variant="outlined">
 						<VRow class="pa-4">
 							<VCol cols="12">
@@ -100,10 +122,14 @@ function customFilter(itemTitle, queryText, item) {
 							</VCol>
 						</VRow>
 					</VCard>
-					<VBtn type="submit" variant="outlined" class="mt-4">Create</VBtn>
+					<VCheckbox v-model="familyData.isCanon" label="Canon" />
+					<VBtn width="100%" type="submit" variant="outlined" class="mt-4">
+						Create
+					</VBtn>
 				</VForm>
 			</VCol>
 		</VRow>
 	</VCard>
 </template>
 <style scoped lang="scss"></style>
+<!--:prepend-avatar="item.raw.pfp"-->
