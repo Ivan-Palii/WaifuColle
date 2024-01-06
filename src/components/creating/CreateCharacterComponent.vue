@@ -33,13 +33,13 @@ function corpedImage(data) {
 }
 </script>
 <template>
-	<VCard :elevation="8" class="rounded" variant="outlined">
+	<VCard :elevation="8" class="rounded ma-auto" variant="outlined" max-width="600" >
 		<VCardTitle>Create character form</VCardTitle>
 		<VRow class="pa-8">
 			<VCol cols="12">
 				<VForm v-model="isValid" lazy-validation @submit.prevent="formSubmit">
 					<VRow class="mb-4">
-						<VCol cols="12" md="3" sm="6">
+						<VCol cols="12" md="6" sm="6">
 							<div class="d-flex justify-center">
 								<VAvatar
 									size="200"
@@ -56,7 +56,7 @@ function corpedImage(data) {
 								/>
 							</div>
 						</VCol>
-						<VCol cols="12" md="3" sm="6">
+						<VCol cols="12" md="6" sm="6">
 							<VTextField
 								v-model.trim="characterData.name"
 								:rules="rule.notEmpty"
