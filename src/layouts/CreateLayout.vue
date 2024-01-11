@@ -17,14 +17,15 @@ const routes = reactive([
 		to: { name: "CreateFamily" },
 	},
 ]);
+
 </script>
 <template>
 	<VAppBar color="secondary" density="compact">
 		<template #prepend>
 			<div class="hidden-xs">
-				<VBtn :to="{ name: 'CreateSource' }">Create source</VBtn>
-				<VBtn :to="{ name: 'CreateCharacter' }">Create character</VBtn>
-				<VBtn :to="{ name: 'CreateFamily' }">Create family</VBtn>
+				<VBtn v-for="(route, index) in routes" :to="route.to" :key="index">
+					{{ route.title }}
+				</VBtn>
 			</div>
 			<div class="hidden-sm-and-up">
 				<VBtn icon="mdi-menu" @click.prevent="drawer = !drawer" />
@@ -48,6 +49,8 @@ const routes = reactive([
 		</VList>
 	</VNavigationDrawer>
 	<h2>CREATE LAYOUT</h2>
+
+
 	<RouterView />
 </template>
 <style scoped lang="scss">

@@ -3,6 +3,7 @@ import { useFirebaseDataStore } from "./store/firebaseData.js";
 import { onMounted } from "vue";
 import TheHeader from "@/components/common/TheHeader.vue";
 import TheFooter from "@/components/common/TheFooter.vue";
+import TheSnackbar from "@/components/TheSnackbar.vue";
 
 const { getCategories } = useFirebaseDataStore();
 
@@ -20,5 +21,6 @@ onMounted(async () => {
 			</VContainer>
 		</VMain>
 		<TheFooter />
+		<TheSnackbar />
 	</VApp>
 </template>
