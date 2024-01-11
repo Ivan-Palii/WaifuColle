@@ -35,7 +35,7 @@ function corpedImage(data) {
 }
 </script>
 <template>
-	<VCard :elevation="8" class="rounded" variant="outlined">
+	<VCard :elevation="8" class="rounded ma-auto" variant="outlined" max-width="900">
 		<VCardTitle>Create source form</VCardTitle>
 		<VRow class="pa-8">
 			<VCol cols="12">
@@ -86,7 +86,7 @@ function corpedImage(data) {
 										@click="sourceData.altNames.splice(index, 1)"
 									/>
 								</div>
-								<VBtn variant="outlined" @click="sourceData.altNames.push('')">
+								<VBtn variant="outlined" @click="sourceData.altNames.push('')" width="100%">
 									Add alternative name
 								</VBtn>
 							</div>

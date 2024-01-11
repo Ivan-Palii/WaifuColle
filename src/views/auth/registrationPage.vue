@@ -17,17 +17,18 @@ const userData = reactive({
 
 async function registerUserForm() {
 	await registerUser(userData);
-	setSnackbarParams({
-		isOpen: true,
-		message: "Registration completed successfully",
-		color: "green",
-	});
+
 	router.push({ name: "Home" });
 }
 </script>
 <template>
-	<h2>Registration</h2>
-	<VCard>
+	<VCard
+		:elevation="8"
+		class="rounded ma-auto mt-8"
+		variant="outlined"
+		max-width="400"
+	>
+		<VCardTitle>Registration</VCardTitle>
 		<VForm @submit.prevent="registerUserForm">
 			<VContainer>
 				<VTextField
@@ -48,7 +49,11 @@ async function registerUserForm() {
 					label="Password"
 					variant="outlined"
 				/>
-				<VBtn variant="outlined" text="Create" type="submit" />
+				<div>
+					Have account?
+					<RouterLink :to="{ name: 'Login' }">Log In!</RouterLink>
+				</div>
+				<VBtn class="mt-4" variant="outlined" text="Register" type="submit" />
 			</VContainer>
 		</VForm>
 	</VCard>

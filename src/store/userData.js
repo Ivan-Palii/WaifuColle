@@ -8,10 +8,12 @@ import {
 	onAuthStateChanged,
 	signOut,
 } from "firebase/auth";
+import { useSnackbarStore } from "@/store/snackbarStore.js";
 
 export const useUserDataStore = defineStore("userData", () => {
 	const user = ref(null);
 	const userDetails = ref(null);
+	const { setSnackbarParams } = useSnackbarStore();
 
 	onAuthStateChanged(auth, async (currentUser) => {
 		user.value = currentUser;
@@ -27,12 +29,17 @@ export const useUserDataStore = defineStore("userData", () => {
 		)
 			.then(async () => await modifyUserDetails(userData))
 			.catch((err) => console.log(err));
+		setSnackbarParams({
+			isOpen: true,
+			message: "Registration completed successfully",
+			color: "green",
+		});
 	}
 
 	async function modifyUserDetails(userData) {
 		const docRef = await setDoc(doc(db, "userDetails", user.value.uid), {
 			displayName: userData.displayName,
-			initials: userData.displayName.slice(0, 2).toUpperCase()
+			initials: userData.displayName.slice(0, 2).toUpperCase(),
 		});
 
 		console.log(docRef);
@@ -40,11 +47,22 @@ export const useUserDataStore = defineStore("userData", () => {
 
 	async function logIn(userData) {
 		await signInWithEmailAndPassword(auth, userData.email, userData.password);
+		setSnackbarParams({
+			isOpen: true,
+			message: "Login completed successfully",
+			color: "green",
+		});
+
 	}
 	async function logOut() {
 		await signOut(auth);
 		user.value = null;
 		userDetails.value = null;
+		setSnackbarParams({
+			isOpen: true,
+			message: "Logout completed successfully",
+			color: "green",
+		});
 	}
 
 	return {

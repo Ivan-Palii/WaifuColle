@@ -1,7 +1,7 @@
 <script setup>
-import { ref } from 'vue';
-import { useSnackbarStore } from '@/store/snackbarStore.js';
-import { storeToRefs } from 'pinia';
+import { ref } from "vue";
+import { useSnackbarStore } from "@/store/snackbarStore.js";
+import { storeToRefs } from "pinia";
 
 const { snackbar } = storeToRefs(useSnackbarStore());
 
@@ -13,23 +13,13 @@ const timeout = ref(3000);
 		:timeout="timeout"
 		:color="snackbar.state.color"
 		location="bottom right"
-
 	>
 		{{ snackbar.state.message }}
-
 		<template #actions>
-			<VBtn
-				color="blue"
-				variant="text"
-				@click="snackbar.state.isOpen = false"
-			>
+			<VBtn color="blue" variant="text" @click="snackbar.state.isOpen = false">
 				Close
 			</VBtn>
 		</template>
 	</VSnackbar>
 </template>
-<style
-	scoped
-	lang="scss"
->
-</style>
+<style scoped lang="scss"></style>
