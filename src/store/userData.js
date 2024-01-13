@@ -37,9 +37,16 @@ export const useUserDataStore = defineStore("userData", () => {
 	}
 
 	async function modifyUserDetails(userData) {
+		const roleRef = ref();
+		if (userData.role) {
+			roleRef.value = await doc(db, "userRoles", userData.role);
+		} else {
+			roleRef.value = await doc(db, "userRole", "USER");
+		}
 		const docRef = await setDoc(doc(db, "userDetails", user.value.uid), {
 			displayName: userData.displayName,
 			initials: userData.displayName.slice(0, 2).toUpperCase(),
+			role: roleRef.value,
 		});
 
 		console.log(docRef);
@@ -52,7 +59,6 @@ export const useUserDataStore = defineStore("userData", () => {
 			message: "Login completed successfully",
 			color: "green",
 		});
-
 	}
 	async function logOut() {
 		await signOut(auth);

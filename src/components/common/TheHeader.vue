@@ -19,7 +19,12 @@ async function logOutUser() {
 	<VAppBar color="primary">
 		<template #prepend>
 			<VBtn :to="{ name: 'Home' }"> Home</VBtn>
-			<VBtn :to="{ name: 'Create' }"> Create Page</VBtn>
+			<VBtn
+				v-if="userDetails?.role?.id === 'ADMIN'"
+				:to="{ name: 'Create' }"
+			>
+				Create Page
+			</VBtn>
 		</template>
 		<template #append>
 			<VBtn
