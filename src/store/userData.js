@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { defineStore } from "pinia";
 import { auth, db } from "../firebase/firebase.config.js";
 import { doc, getDoc, setDoc } from "firebase/firestore";
@@ -12,8 +12,41 @@ import { useSnackbarStore } from "@/store/snackbarStore.js";
 
 export const useUserDataStore = defineStore("userData", () => {
 	const user = ref(null);
-	const userDetails = ref(null);
+	const userDetails = ref({});
 	const { setSnackbarParams } = useSnackbarStore();
+	const userInLocalStorage = localStorage.getItem("user");
+	const userDetailsInLocalStorage = localStorage.getItem("userDetails");
+
+	if (userInLocalStorage) {
+		user.value = JSON.parse(userInLocalStorage)._value;
+	}
+	if (userDetailsInLocalStorage) {
+		userDetails.value = {
+			role: {
+				id: userDetailsInLocalStorage.slice(
+					1,
+					userDetailsInLocalStorage.length - 1
+				),
+			},
+		};
+	}
+
+	watch(
+		() => user,
+		(state) => {
+			localStorage.setItem("user", JSON.stringify(state));
+		},
+		{ deep: true }
+	);
+
+	watch(
+		() => userDetails.value?.role,
+		(state) => {
+			if (state === undefined) localStorage.removeItem("userDetails");
+			else localStorage.setItem("userDetails", JSON.stringify(state.id));
+		},
+		{ deep: true }
+	);
 
 	onAuthStateChanged(auth, async (currentUser) => {
 		user.value = currentUser;

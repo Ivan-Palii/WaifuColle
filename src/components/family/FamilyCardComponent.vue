@@ -4,7 +4,7 @@ const props = defineProps({
 		type: Object,
 		required: true,
 	},
-/*	sourceCategory: {
+	/*	sourceCategory: {
 		type: Object,
 		required: true,
 	},
@@ -15,15 +15,37 @@ const props = defineProps({
 });
 </script>
 <template>
-	<VCard>
-		<VRow>
-			<VCol cols="12" xxl="2" xl="3" md="5" sm="4">
-				<VCardTitle>{{ family.name }}</VCardTitle>
-				<VCardSubtitle>
-<!--					{{ sourceCategory.name }}: {{ source.name }}-->
-				</VCardSubtitle>
-			</VCol>
-		</VRow>
-	</VCard>
+	<VCol cols="12"  md="6" sm="12" class="pa-4">
+		<VCard variant="outlined" class="pa-4">
+			<VRow>
+				<VCol
+					cols="12"
+					md="6"
+					sm="12"
+				>
+					<VAvatar
+						variant="outlined"
+						rounded="0"
+						size="250"
+					>
+						<VRow class="justify-center pa-3">
+							<VCol
+								v-for="pfp in family.pfpSrc"
+								:cols="family.pfpSrc.length <= 1 ? 12 : 6"
+								:key="pfp"
+								class="ma-0 pa-0"
+							>
+								<VImg :src="pfp"/>
+							</VCol>
+						</VRow>
+					</VAvatar>
+					<VCardTitle>{{ family.name }}</VCardTitle>
+					<VCardSubtitle>
+						<!--					{{ sourceCategory.name }}: {{ source.name }}-->
+					</VCardSubtitle>
+				</VCol>
+			</VRow>
+		</VCard>
+	</VCol>
 </template>
 <style scoped lang="scss"></style>

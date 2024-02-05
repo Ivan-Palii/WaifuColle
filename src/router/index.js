@@ -81,7 +81,7 @@ const routes = [
 
 const router = createRouter({
 	// history: createWebHistory(process.env.BASE_URL),
-	history: createWebHashHistory(),
+	history: createWebHashHistory(process.env.BASE_URL),
 	routes,
 });
 
@@ -93,6 +93,8 @@ router.beforeEach(async (to, from, next) => {
 	const adminReq = to.matched.some((route) => route.meta.adminAccess);
 	const noAuthReq = to.matched.some((route) => route.meta.hideLogged);
 	// , adminAccess: true
+
+
 	if ((authReq || redactorReq || adminReq) && !user.value) {
 		next({ name: "Home" });
 		setSnackbarParams({

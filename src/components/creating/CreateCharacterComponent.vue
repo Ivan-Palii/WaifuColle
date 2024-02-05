@@ -1,22 +1,26 @@
 <script setup>
 import { useFirebaseDataStore } from "@/store/firebaseData.js";
-import VuePictureCropper, { cropper } from "vue-picture-cropper";
-
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import CharacterAvatarImageCorp from "@/components/CharacterAvatarImageCorp.vue";
 
-const { createCharacter } = useFirebaseDataStore();
+const { createCharacter, getSources } = useFirebaseDataStore();
 const characterData = reactive({
 	name: "",
 	status: "",
+	source: null,
 	pfp: new URL(`@/assets/default.jpg`, import.meta.url).href,
 });
 const isValid = ref(false);
 const isActive = ref(false);
+const sources = ref();
 const emptyCheck = (v) => !!v || "Field is required";
 const rule = reactive({
 	notEmpty: [emptyCheck],
 	bool: [(v) => typeof v === "boolean" || "You need to select status"],
+});
+
+onMounted(async () => {
+	sources.value = await getSources();
 });
 
 async function formSubmit() {
@@ -25,7 +29,17 @@ async function formSubmit() {
 		characterData.name = "";
 		characterData.status = "";
 		characterData.pfp = new URL(`@/assets/default.jpg`, import.meta.url).href;
+		characterData.source = null;
 	}
+}
+
+function customFilter(itemTitle, queryText, item) {
+	return (
+		item.raw.name.toLowerCase().indexOf(queryText.toLowerCase()) > -1 ||
+		!!item.raw.altNames.find((item) => {
+			return item.toLowerCase().indexOf(queryText.toLowerCase()) > -1;
+		})
+	);
 }
 
 function corpedImage(data) {
@@ -33,7 +47,12 @@ function corpedImage(data) {
 }
 </script>
 <template>
-	<VCard :elevation="8" class="rounded ma-auto" variant="outlined" max-width="600" >
+	<VCard
+		:elevation="8"
+		class="rounded ma-auto"
+		variant="outlined"
+		max-width="600"
+	>
 		<VCardTitle>Create character form</VCardTitle>
 		<VRow class="pa-8">
 			<VCol cols="12">
@@ -46,7 +65,7 @@ function corpedImage(data) {
 									style="border: 1px solid black"
 									class="mb-8"
 								>
-									<VImg :src="characterData.pfp"/>
+									<VImg :src="characterData.pfp" />
 								</VAvatar>
 							</div>
 							<div class="d-flex justify-center">
@@ -64,11 +83,39 @@ function corpedImage(data) {
 								variant="outlined"
 								required
 							/>
-							<VRadioGroup v-model="characterData.status" :rules="rule.bool" inline>
+							<VRadioGroup
+								v-model="characterData.status"
+								:rules="rule.bool"
+								inline
+							>
 								<template #label> <b>Character status:</b></template>
 								<VRadio :value="false" label="Dead" />
 								<VRadio :value="true" label="Alive" />
 							</VRadioGroup>
+							<VAutocomplete
+								v-model="characterData.source"
+								:items="sources"
+								:rules="rule.notEmpty"
+								:custom-filter="customFilter"
+								item-title="name"
+								item-value="id"
+								label="Source(*)"
+								variant="outlined"
+								required
+							>
+								<template #item="{ props, item }">
+									<VListItem v-bind="props" :title="item.raw.name">
+										<template #prepend>
+											<VImg
+												:width="40"
+												:aspect-ratio="2 / 3"
+												:src="item.raw.poster"
+												class="mr-2"
+											/>
+										</template>
+									</VListItem>
+								</template>
+							</VAutocomplete>
 						</VCol>
 					</VRow>
 					<VBtn width="100%" type="submit" variant="outlined">Create</VBtn>

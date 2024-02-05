@@ -20,7 +20,7 @@ const params = reactive({
 				<VRow class="ma-0">
 					<div class="pa-4">
 						<VAvatar size="100" style="border: 1px solid black">
-							<VImg :src="character.pfp" />
+							<VImg :src="character.pfpSrc" />
 						</VAvatar>
 					</div>
 					<div class="d-flex flex-column">
